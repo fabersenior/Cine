@@ -20,6 +20,7 @@ public class SplashActivity extends AppCompatActivity {
 
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
+        //commit
 
         TimerTask task = new TimerTask() {
             @Override

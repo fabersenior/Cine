@@ -38,10 +38,7 @@
             android:id="@+id/textView"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
-
-
     </RelativeLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -71,18 +68,12 @@
                     android:id="@+id/imagent"
                     android:onClick="btn_Image"
                     />
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Combo1"
                     android:textColor="@color/white"/>
-
             </LinearLayout>
-
-
-
-
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,14 +83,8 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/combo3"/>
-
-
-
         </LinearLayout>
-
-
         </ScrollView>
-
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,11 +94,5 @@
             android:textStyle="bold"
             android:textSize="20sp"
             android:onClick="btn_Carrito"/>
-
     </LinearLayout>
-
-
-
-
-
 </LinearLayout>

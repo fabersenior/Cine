@@ -23,6 +23,7 @@ public class CatalogoActivity extends AppCompatActivity {
     }
 
     public void btn_Carrito(View view){
-
+        Intent intent = new Intent(getApplicationContext(),ResumenActivity.class);
+        startActivity(intent);
     }
 }

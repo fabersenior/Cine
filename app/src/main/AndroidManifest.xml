@@ -19,7 +19,8 @@
         <activity android:name=".LoginActivity" />
         <activity android:name=".LoginAdminActivity" />
         <activity android:name=".CatalogoActivity" />
-        <activity android:name=".ShowActivity"></activity>
+        <activity android:name=".ShowActivity" />
+        <activity android:name=".ResumenActivity"></activity>
     </application>
 
 </manifest>

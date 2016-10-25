@@ -17,7 +17,9 @@
         </activity>
         <activity android:name=".PreLoginActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".LoginAdminActivity"></activity>
+        <activity android:name=".LoginAdminActivity" />
+        <activity android:name=".CatalogoActivity" />
+        <activity android:name=".ShowActivity"></activity>
     </application>
 
 </manifest>

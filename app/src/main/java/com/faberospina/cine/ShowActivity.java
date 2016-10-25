@@ -4,18 +4,15 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 
-public class LoginActivity extends AppCompatActivity {
+public class ShowActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_show);
     }
-
-    public  void btnIngresar(View view){
+    public  void btn_Añadir_Carrito(View view){
 
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
         startActivity(intent);

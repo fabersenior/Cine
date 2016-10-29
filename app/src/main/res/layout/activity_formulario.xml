@@ -11,6 +11,32 @@
     tools:context="com.faberospina.cine.FormularioActivity"
     android:background="@drawable/textura_fondo"
     android:orientation="vertical">
+    <!--FALTA EN FECHA DE CADUCIDAD CALENDAR-->
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cinta"
+            android:id="@+id/imageView2"
+            android:contentDescription="cinta"
+            tools:ignore="HardcodedText"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FORMUARIO"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:id="@+id/tCombo"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -19,35 +45,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/cinta"
-                android:id="@+id/imageView2"
-                android:contentDescription="cinta"
-                tools:ignore="HardcodedText"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="FORMUARIO"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:id="@+id/tCombo"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Titular de la tarjeta"
             android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="23sp"
             android:gravity="center" />
         <LinearLayout
@@ -102,32 +106,40 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Apellidos"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Nombres"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="(555)555-5555"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:inputType="number"
                     android:textSize="13sp"/>
+
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Correo"
                     android:textColor="@color/white"
-                    android:textSize="13sp"/>
+                    android:singleLine="true"
+                    android:textSize="13sp"
+                    android:id="@+id/editText3" />
+
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="#######"
                     android:inputType="number"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
             </LinearLayout>
@@ -139,6 +151,7 @@
             android:text="Datos de la tarjeta"
             android:textColor="@color/white"
             android:textSize="23sp"
+            android:textStyle="bold"
             android:gravity="center" />
         <LinearLayout
             android:layout_width="wrap_content"
@@ -179,19 +192,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="N° Tarjeta"
+                    android:singleLine="true"
                     android:inputType="number"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombres"
+                    android:text="Fecha"
+                    android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="#####"
+                    android:singleLine="true"
                     android:inputType="number"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>

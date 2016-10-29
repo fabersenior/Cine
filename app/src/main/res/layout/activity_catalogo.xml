@@ -12,6 +12,8 @@
     tools:context="com.faberospina.cine.CatalogoActivity"
     android:background="@drawable/textura_fondo">
 
+    <!--FALTA LIST VIEW-->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -47,7 +49,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:verticalScrollbarPosition="right">
 
         <LinearLayout

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "343308511023",
+    "firebase_url": "https://appcine-b45ca.firebaseio.com",
+    "project_id": "appcine-b45ca",
+    "storage_bucket": "appcine-b45ca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343308511023:android:1fa3ea8fadb01f9e",
+        "android_client_info": {
+          "package_name": "com.faberospina.cine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "343308511023-7uq5jldo2gdh1cdtjsq62npl1hjrr276.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.faberospina.cine",
+            "certificate_hash": "23BFAC73F8AEA2A4CD018BFBADAA39BD839381DF"
+          }
+        },
+        {
+          "client_id": "343308511023-35sm945bj3rrevp592ea92g7j37fr92j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDx2eVIIotaSdE3ldUIErtCn6j0pL7vAnk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "343308511023-35sm945bj3rrevp592ea92g7j37fr92j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

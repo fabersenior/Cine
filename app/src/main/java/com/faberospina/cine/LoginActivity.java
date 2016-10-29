@@ -20,4 +20,8 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
         startActivity(intent);
     }
+    public void btnRegistrarse(View view){
+        Intent intent= new Intent(getApplicationContext(),RegistroActivity.class);
+        startActivity(intent);
+    }
 }

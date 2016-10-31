@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="Usuario"
                 android:layout_gravity="center"
+
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -62,13 +63,17 @@
                 android:layout_height="wrap_content"
                 android:hint="Login"
                 android:gravity="center"
+                android:singleLine="true"
                 android:id="@+id/eLogin"
+                android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Password"
+
+                android:singleLine="true"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textStyle="bold"
@@ -77,6 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="pass"
+                android:singleLine="true"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:inputType="textPassword"
                 android:id="@+id/ePass1"
@@ -97,6 +104,8 @@
                 android:id="@+id/ePass2"
                 android:hint="Repetir pass"
                 android:gravity="center"
+                android:singleLine="true"
+                android:textColor="@color/white"
 
                 android:inputType="textPassword"
                 android:textColorHint="@color/white"/>
@@ -113,6 +122,8 @@
                 android:layout_height="wrap_content"
                 android:inputType="textWebEmailAddress"
                 android:hint="Email"
+                android:singleLine="true"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:id="@+id/eCorreo"
                 android:textColorHint="@color/white"

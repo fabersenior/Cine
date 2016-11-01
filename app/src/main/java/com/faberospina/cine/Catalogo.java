@@ -16,6 +16,13 @@ public class Catalogo {
         this.descripcion2 = descripcion2;
     }
 
+    public Catalogo(String nombre,int precio, String descripcion1, String descripcion2) {
+        this.precio = precio;
+        this.nombre = nombre;
+        this.descripcion1 = descripcion1;
+        this.descripcion2 = descripcion2;
+    }
+
     public int getIdImage() {
         return idImage;
     }

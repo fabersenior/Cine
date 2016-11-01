@@ -23,10 +23,10 @@ public class pedidosAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pedidos_admin);
 
         //Para la lista de pedidos
-        lista_catalogo =(ListView)findViewById(R.id.Lista);
+     /*   lista_catalogo =(ListView)findViewById(R.id.Lista);
         Lista_arreglos = new ArrayList<String>();
         adaptador = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1,Lista_arreglos);
-        lista_catalogo.setAdapter(adaptador);
+        //lista_catalogo.setAdapter(adaptador);*/
     }
 
      public  void image_OnClick(View view){

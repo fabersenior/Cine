@@ -29,7 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FORMUARIO"
+            android:text="FORMULARIO"
             android:textColor="@color/white"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -105,21 +105,24 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Apellidos"
+                    android:hint="Apellidos"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombres"
+                    android:hint="Nombres"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="(555)555-5555"
+                    android:hint="(555)555-5555"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:inputType="number"
@@ -128,17 +131,20 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Correo"
+                    android:hint="Correo"
                     android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
+                    android:inputType="textEmailAddress"
                     android:textSize="13sp"
                     android:id="@+id/editText3" />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="#######"
+                    android:hint="#######"
                     android:inputType="number"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textSize="13sp"/>
@@ -191,7 +197,8 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="N° Tarjeta"
+                    android:hint="N° Tarjeta"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:inputType="number"
                     android:textColor="@color/white"
@@ -199,14 +206,16 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fecha"
+                    android:hint="Fecha"
                     android:singleLine="true"
                     android:textColor="@color/white"
+                    android:textColorHint="@color/white"
                     android:textSize="13sp"/>
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="#####"
+                    android:hint="#####"
+                    android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:inputType="number"
                     android:textColor="@color/white"

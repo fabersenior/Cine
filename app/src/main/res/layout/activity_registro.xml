@@ -128,48 +128,7 @@
                 android:id="@+id/eCorreo"
                 android:textColorHint="@color/white"
                 />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Sexo"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
 
-                <RadioGroup
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/rGroup"
-
-                    android:gravity="center"
-                    android:orientation="vertical">
-                    <RadioButton android:id="@+id/RMasculino"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Masculino"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-
-                        android:textSize="20sp"
-                        android:onClick="onRadioButtonClicked"/>
-                    <RadioButton android:id="@+id/RFemenino"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:text="Femenino"
-                        android:textSize="20sp"
-                        android:onClick="onRadioButtonClicked"/>
-
-                </RadioGroup>
-
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -202,40 +161,49 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="Lugar de Nacimiento"
+                    android:text="Registrarse"
+                    android:id="@+id/btn_ingresar"
+                    android:background="@drawable/degradado"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:onClick="btn_Registro"
+                    />
 
-                <Spinner
-                    android:id="@+id/spinner_citys"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="5dp"
+                    android:layout_height="5dp"></LinearLayout>
+
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:spinnerMode="dropdown"
+                    android:text="Cancelar"
+                    android:id="@+id/btn_Cancelar"
+                    android:background="@drawable/degradado"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_gravity="center"
+                    android:onClick="btn_Cancelar"
                     />
 
 
             </LinearLayout>
-            <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="Registrarse"
-                android:id="@+id/btn_ingresar"
-                android:background="@drawable/degradado"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="20sp"
-                android:layout_marginTop="40dp"
-                android:layout_gravity="center"
-                android:onClick="btn_Registro"
-                />
+
+
+
 
             <!--Aqui termina el SCROLLVIEW-->
         </LinearLayout>

@@ -6,29 +6,33 @@ package com.faberospina.cine;
 
 public class Contacto {
 
-    private String nombre, telefono, mail, id;
+    private String nombre, pass, mail, id,fecha;
+    int year;
 
     public Contacto() {
     }
 
-    public Contacto(String nombre, String telefono, String mail, String id) {
+    public Contacto(String nombre, String pass, String mail, String id,int year) {
         this.nombre = nombre;
-        this.telefono = telefono;
+        this.pass = pass;
         this.mail = mail;
         this.id = id;
+        this.year=year;
     }
 
     public String getNombre() {
         return nombre;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public String getPass() {
+        return pass;
     }
 
     public String getMail() {
         return mail;
     }
+
+    public int getYear(){ return  year;}
 
     public String getId() {
         return id;

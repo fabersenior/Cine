@@ -46,7 +46,7 @@ public class ShowActivity extends AppCompatActivity {
          prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
         posicion_lista=prefs.getString("kPos","07");
         pos=Integer.parseInt(posicion_lista);
-        Toast.makeText(getApplicationContext(),posicion_lista, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),posicion_lista, Toast.LENGTH_SHORT).show();
 
         imageShow = (ImageView) findViewById(R.id.imageShow);
         title= (TextView) findViewById(R.id.tCombo);
@@ -123,5 +123,6 @@ public class ShowActivity extends AppCompatActivity {
 
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
         startActivity(intent);
+        finish();
     }
 }

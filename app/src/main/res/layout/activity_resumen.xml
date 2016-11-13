@@ -39,11 +39,13 @@
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="match_parent"
+
         android:verticalScrollbarPosition="right">
 
         <LinearLayout
@@ -53,8 +55,10 @@
 
             <ListView
                 android:layout_width="match_parent"
-                android:layout_height="190dp"
-                android:id="@+id/lista_resumen"></ListView>
+                android:layout_height="288dp"
+                android:id="@+id/lista_resumen">
+
+            </ListView>
         </LinearLayout>
     </ScrollView>
     </LinearLayout>
@@ -78,6 +82,7 @@
             android:textColor="@color/white"
             />
     </LinearLayout>
+
     <LinearLayout
         android:layout_marginTop="10sp"
         android:layout_width="match_parent"
@@ -86,12 +91,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Asiento"
+            android:text="Seleccione asiento"
             android:textColor="@color/white"
             android:textSize="20sp"/>
         <Spinner
-            android:layout_marginLeft="60sp"
-            android:layout_width="50sp"
+            android:layout_marginLeft="15sp"
+            android:layout_width="60sp"
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:textSize="20sp"
@@ -99,8 +104,8 @@
             android:id="@+id/Letras"
             />
         <Spinner
-            android:layout_marginLeft="20sp"
-            android:layout_width="50sp"
+            android:layout_marginLeft="15sp"
+            android:layout_width="80sp"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:background="@color/white"

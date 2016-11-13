@@ -2,12 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/textura_fondo"
+
     tools:context="com.faberospina.cine.PedidoFragment">
 
-    <!--FALTA LIST VIEW-->
+    <!--FALTA LIST VIEW######## OK -->
+
 
     <!-- TODO: Update blank fragment layout -->
+
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -46,11 +50,13 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:orientation="vertical">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:verticalScrollbarPosition="right">
 
             <LinearLayout
@@ -58,30 +64,27 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/combo3"/>
-
-                </LinearLayout>
-
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="369dp"
+                    android:id="@+id/listafra">
+                </ListView>
+            </LinearLayout>
             </ScrollView>
-
-
         </LinearLayout>
+        <Button
+            android:layout_width="200dp"
+            android:id="@+id/btn_Despachar"
+            android:layout_height="wrap_content"
+            android:text="Despachar"
+            android:background="@drawable/degradado"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center"
 
+            />
     </LinearLayout>
 
-    <Button
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:text="Despachar"
-        android:background="@drawable/degradado"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_marginTop="40dp"
-        android:layout_gravity="center"
-        android:onClick="btn_pagar"
-        />
 </FrameLayout>

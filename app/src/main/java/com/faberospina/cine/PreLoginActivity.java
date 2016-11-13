@@ -20,12 +20,12 @@ public class PreLoginActivity extends AppCompatActivity {
     public void btnUser(View view){
         Intent intent=new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);
-        finish();
+
     }
 
     public  void btnAdmin(View view){
         Intent intent=new Intent(getApplicationContext(),LoginAdminActivity.class);
         startActivity(intent);
-        finish();
+
     }
 }

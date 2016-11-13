@@ -24,6 +24,8 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.faberospina.cine.R.color.white;
+
 public class RegistroActivity extends AppCompatActivity{
 
     public String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
@@ -54,7 +56,6 @@ public class RegistroActivity extends AppCompatActivity{
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
 
-
         eName = (EditText) findViewById(R.id.eLogin);
         ePass = (EditText) findViewById(R.id.ePass1);
         ePass2 = (EditText) findViewById(R.id.ePass2);
@@ -66,11 +67,11 @@ public class RegistroActivity extends AppCompatActivity{
     }
     public void btn_Registro(View view){
 
-        Intent intent = new Intent();
-         int ok=0;
+        final Intent intent = new Intent();
+        final int[] ok = {0};
         flag=true;
       
-        Toast.makeText(getApplicationContext(),String.valueOf(year),Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getApplicationContext(),String.valueOf(year),Toast.LENGTH_SHORT).show();
 
         nombre = eName.getText().toString();
         correo = eEmail.getText().toString();
@@ -82,7 +83,7 @@ public class RegistroActivity extends AppCompatActivity{
             intent.putExtra("kName",eName.getText().toString());
             SavePreferences("kName",eName.getText().toString());
 
-            ok++;
+            ok[0]++;
         }
 
         if(ePass.length()==0){
@@ -94,7 +95,7 @@ public class RegistroActivity extends AppCompatActivity{
             intent.putExtra("kPass",pass);
             //editor.putString("kPass",pass);
 
-            ok++;
+            ok[0]++;
         }
         if(ePass2.length()==0){
             Toast.makeText(getApplicationContext(), "Ingrese Password", Toast.LENGTH_SHORT)
@@ -108,7 +109,7 @@ public class RegistroActivity extends AppCompatActivity{
                 intent.putExtra("kPass",pass);
                 //editor.putString("kPass",pass);
                 SavePreferences("kPass",pass);
-                ok++;//3
+                ok[0]++;//3
 
             }else{
                 Toast.makeText(getApplicationContext(), "Password Incorrect", Toast.LENGTH_SHORT)
@@ -125,6 +126,7 @@ public class RegistroActivity extends AppCompatActivity{
             intent.putExtra("kEmail",correo);
             SavePreferences("kEmail",correo);
 
+
             firebasedatos.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,44 +134,58 @@ public class RegistroActivity extends AppCompatActivity{
                     while(flag) {
                         codigo = Integer.toString(id);
                         final String data = "Usuario" + codigo;
+                        if(dataSnapshot.child("Contactos").child(data).child("mail").exists()){
+                            String mail= dataSnapshot.child("Contactos").child(data).child("mail").getValue().toString();
 
-                        if (dataSnapshot.child("Contactos").child(data).exists()) {
-                            // Log.d("datos",dataSnapshot.child(data).getValue().toString());
-                            String uu="el usuario ya existe";
-                            Toast.makeText(RegistroActivity.this,uu, Toast.LENGTH_SHORT).show();
-                            codigo = Integer.toString(id++);
-                            flag = true;
-                        } else {
-                            final Firebase firebase;
-                            final Firebase firebase1;
-                            flag = false;
-                            firebase = firebasedatos.child("Contactos"); //creamos un hijo de firebasedatos
-                            firebase1= firebase.child("Usuario" + id);
-                            Contacto contacto = new Contacto(nombre, pass, correo, String.valueOf(id), year);
-                            firebase1.setValue(contacto);
-                            Toast.makeText(getApplicationContext(), "Usuario Agregado", Toast.LENGTH_SHORT).show();
-                        }
+                            if (mail.equals(correo)){
+                                String uu="el usuario ya existe";
+                                Toast.makeText(RegistroActivity.this,uu, Toast.LENGTH_SHORT).show();
+                               // codigo = Integer.toString(id++);
+                                flag=false;
+                                cancel();
+                            }else {
+                                codigo = Integer.toString(id++);
+                            }
+                        }else{
+                            if (dataSnapshot.child("Contactos").child(data).exists()) {
+                                // Log.d("datos",dataSnapshot.child(data).getValue().toString());
+                                String uu="el usuario ya existe";
+                                //Toast.makeText(RegistroActivity.this,uu, Toast.LENGTH_SHORT).show();
+                                codigo = Integer.toString(id++);
+                                // Toast.makeText(RegistroActivity.this,codigo, Toast.LENGTH_SHORT).show();
+                                flag = true;
+                            } else {
+                                final Firebase firebase;
+                                final Firebase firebase1;
+                                flag = false;
+                                ok[0]++;//4
+                                firebase = firebasedatos.child("Contactos"); //creamos un hijo de firebasedatos
+                                firebase1= firebase.child("Usuario" + id);
+                                Contacto contacto = new Contacto(nombre, pass, correo, String.valueOf(id), year);
+                                firebase1.setValue(contacto);
+                                Toast.makeText(getApplicationContext(), "Usuario Agregado", Toast.LENGTH_SHORT).show();
+                                Log.d("valor k:",Integer.toString(ok[0]));
+                                if (ok[0] >=4){
+                                    setResult(RESULT_OK,intent);
+                                    finish();
+                                }
+                            }
+
+
+                       }
+
+
 
                     }
-
                 }
-
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {        }
             });
 
-            if (flag==false){ ok++;//4
-                 }
-            Log.d("valor k:",Integer.toString(ok));
+          //  Toast.makeText(RegistroActivity.this,Boolean.toString(flag), Toast.LENGTH_SHORT).show();
+
+
         }
-
-
-        
-        if (ok>=4){
-            setResult(RESULT_OK,intent);
-            finish();
-        }
-
 
 /*        Intent intent= new Intent(getApplicationContext(),LoginActivity.class);
         startActivity(intent);*/
@@ -218,12 +234,20 @@ public class RegistroActivity extends AppCompatActivity{
 
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
+        dateView.setTextColor(getResources().getColor(white));
+/*
         Toast.makeText(getApplicationContext(),new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year),Toast.LENGTH_SHORT).show();
+*/
 
     }
 
     public  void  btn_Cancelar(View view){
+            cancel();
+    }
+
+    public void cancel(){
+
         Intent intent = new Intent();
         setResult(RESULT_CANCELED,intent);
         finish();

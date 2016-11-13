@@ -41,13 +41,14 @@ public class ResumenActivity extends NavegacionActivity {
 
     //Para el combo escogido
     String posicion_lista;
-    Catalogo[] productos =
+    ArrayList<Catalogo> promociones1 = new ArrayList<Catalogo>();
+/*    Catalogo[] productos =
             new Catalogo[]{
                     new Catalogo(R.drawable.combo1, 17500, "COMBO 1", "1 Crispetas 170 Oz", "2 Gaseosas 32 Oz"),
                     new Catalogo(R.drawable.combo2,14000,"COMBO 2","1 Crispetas 170 Oz","1 Gaseosas 32 Oz"),
                     new Catalogo(R.drawable.combo3,15300,"COMBO 3","1 Crispetas 130 Oz","1 Gaseosas 32 Oz y 1 Perro o Sandwich"),
                     new Catalogo(R.drawable.combo_grande_1,25500,"COMBO 4","1 Crispetas 170 Oz","2 Gaseosas 32 Oz"),
-            };
+            };*/
 
     //Declaracion Spinner
     Spinner spLetras,spNumeros;
@@ -73,37 +74,35 @@ public class ResumenActivity extends NavegacionActivity {
         {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-/*
-                String p="";
+ /*               String p="";
                 p= String.valueOf(spLetras.getContentDescription().charAt(position));
-
                 Toast.makeText(getApplicationContext(),p,Toast.LENGTH_SHORT).show();*/
                 switch(position) {
-                    case 0:
+                    case 1:
                         Letra="A";
                         break;
-                    case 1:
+                    case 2:
                         Letra="B";
                         break;
-                    case 2:
+                    case 3:
                         Letra="C";
                         break;
-                    case 3:
+                    case 4:
                         Letra="D";
                         break;
-                    case 4:
+                    case 5:
                         Letra="E";
                         break;
-                    case 5:
+                    case 6:
                         Letra="F";
                         break;
-                    case 6:
+                    case 7:
                         Letra="G";
                         break;
-                    case 7:
+                    case 8:
                         Letra="H";
                         break;
-                    case 8:
+                    case 9:
                         Letra="I";
                         break;
                 }
@@ -127,7 +126,7 @@ public class ResumenActivity extends NavegacionActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 Numero=Integer.toString(position);
-                pos=position+1;
+                pos=position;
 
             }
             @Override
@@ -135,28 +134,18 @@ public class ResumenActivity extends NavegacionActivity {
 
             }
         });
-
-
-
-        Adapter adaptador=new Adapter(this,productos);
+        Adapter adaptador=new Adapter(this,promociones1);
         lista_resumen=(ListView)findViewById(R.id.lista_resumen);
         lista_resumen.setAdapter(adaptador);
-
-
-
-
     }
 
     public void btn_pagar(View view){
 
         letter=Letra;
-        pos=Integer.parseInt(Numero)+1;
+        pos=Integer.parseInt(Numero);//+1
         flag=true;
-
-
         firebasedatos.setAndroidContext(this);//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
-
         firebasedatos.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -195,15 +184,35 @@ public class ResumenActivity extends NavegacionActivity {
         Toast.makeText(getApplicationContext(),Numero, Toast.LENGTH_SHORT).show();
     }
     class Adapter extends ArrayAdapter<Catalogo>{
-        public Adapter(Context context, Catalogo[] productos){
+        public Adapter(Context context, ArrayList<Catalogo> productos){
             super(context,R.layout.layout_item1,productos);
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+
             LayoutInflater inflater = LayoutInflater.from(getContext());
+
+            View item = inflater.inflate(R.layout.layout_item1, null);
+
+            TextView nombre = (TextView)item.findViewById(R.id.tCombos);
+            nombre.setText((promociones1.get(position)).getNombre());
+
+            TextView descripcion = (TextView)item.findViewById(R.id.tDescripcion1);
+            descripcion.setText((promociones1.get(position)).getDescripcion1());
+
+            TextView precio = (TextView)item.findViewById(R.id.tPrecio);
+            precio.setText((promociones1.get(position)).getPrecio());
+
+            ImageView imagen = (ImageView) item.findViewById(R.id.imagen);
+            imagen.setImageResource((promociones1.get(position)).getIdImage());
+
+            TextView tDescripcion2=(TextView)item.findViewById(R.id.tDescripcion2);
+            tDescripcion2.setText(promociones1.get(position).getDescripcion2());
+/*            LayoutInflater inflater = LayoutInflater.from(getContext());
             View item = inflater.inflate(R.layout.layout_item1,null);
             Toast.makeText(getApplicationContext(),Numero, Toast.LENGTH_SHORT).show();
+
             ImageView imagen = (ImageView)item.findViewById(R.id.imagen);
             imagen.setImageResource(productos[position].getIdImage());
 
@@ -217,7 +226,7 @@ public class ResumenActivity extends NavegacionActivity {
             tDescripcion1.setText(productos[position].getDescripcion1());
 
             TextView tDescripcion2=(TextView)item.findViewById(R.id.tDescripcion2);
-            tDescripcion2.setText(productos[position].getDescripcion2());
+            tDescripcion2.setText(productos[position].getDescripcion2());*/
 
             return (item);
         }

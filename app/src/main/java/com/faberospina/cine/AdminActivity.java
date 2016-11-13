@@ -96,8 +96,6 @@ public class AdminActivity extends AppCompatActivity {
         tab = actionBar.newTab().setText("Pedidos").setTabListener(tabListener);
         actionBar.addTab(tab);
 
-        tab = actionBar.newTab().setText("Perfil").setTabListener(tabListener);
-        actionBar.addTab(tab);
 
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
@@ -118,8 +116,6 @@ public class AdminActivity extends AppCompatActivity {
             switch (position){
                 case 0: return new SillasFragment();
                 case 1: return new PedidoFragment();
-                case 2: return new PerfilFragment();
-
                 default: return null;
 
             }
@@ -128,7 +124,7 @@ public class AdminActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 2;
         }
     }
 

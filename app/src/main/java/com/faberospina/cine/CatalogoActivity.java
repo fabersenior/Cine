@@ -18,7 +18,12 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class CatalogoActivity extends NavegacionActivity {
 
@@ -28,6 +33,8 @@ public class CatalogoActivity extends NavegacionActivity {
 
     private String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
     private Firebase firebasedatos;
+
+    //Array list
     private Catalogo[] productos=
             new Catalogo[]{
                     new Catalogo(R.drawable.combo1,17500,"COMBO 1","1 Crispetas 170 Oz","2 Gaseosas 32 Oz"),
@@ -40,9 +47,28 @@ public class CatalogoActivity extends NavegacionActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         //setContentView(R.layout.activity_catalogo);
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.contenedorFrame); //Remember this is the FrameLayout area within your activity_main.xml
         getLayoutInflater().inflate(R.layout.activity_catalogo, contentFrameLayout);
+
+
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//usuario actual
+        if (user!=null){
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            String uid = user.getUid();
+
+/*            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),email,Toast.LENGTH_SHORT).show();*/
+
+
+        }else{
+            logout();
+        }
+
 
         //Para el combo que se escogió
         //posicion_lista=getIntent().getExtras().getString("posicion");
@@ -108,6 +134,20 @@ public class CatalogoActivity extends NavegacionActivity {
         Catalogo setProductos3 = new Catalogo("COMBO Grande", 22500, "1 Crispetas 170 Oz", "2 Gaseosas 32 Oz");//contenido del item
         firebase1.setValue(setProductos3);
 
+    }
+
+    public void logout(){
+        LoginManager.getInstance().logOut();
+        FirebaseAuth.getInstance().signOut();
+        goLoginActivity();
+    }
+
+    private void goLoginActivity() {
+
+        Intent intent= new Intent(getApplicationContext(),PreLoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+       // finish();
     }
 
 

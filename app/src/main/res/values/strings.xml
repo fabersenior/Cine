@@ -5,7 +5,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="abierto">Open navigation drawer</string>
     <string name="cerrado">Close navigation drawer</string>
+    <string name="facebook_app_id">1825393134399881</string>
     <string-array name="Arreglo_letras">
+        <item>Letra</item>
         <item>A</item>
         <item>B</item>
         <item>C</item>
@@ -18,6 +20,7 @@
         <item>J</item>
     </string-array>
     <string-array name="Arreglo_numeros">
+        <item>Número</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
@@ -39,4 +42,5 @@
         <item>19</item>
         <item>20</item>
     </string-array>
+    <string name="title_activity_maps">Map</string>
 </resources>

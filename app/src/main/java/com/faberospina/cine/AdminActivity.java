@@ -49,8 +49,14 @@ public class AdminActivity extends AppCompatActivity {
 
                 if (dataSnapshot.child("Ubicacion").child(data).exists()){
                     //Log.d("datos",dataSnapshot.child(data).getValue().toString());
-                    rep1=dataSnapshot.child("Ubicacion").child(data).child("letter").getValue().toString();
-                    rep2=dataSnapshot.child("Ubicacion").child(data).child("pos").getValue().toString();
+                    if(dataSnapshot.child("Ubicacion").child(data).child("letter").exists()){
+
+                        rep1=dataSnapshot.child("Ubicacion").child(data).child("letter").getValue().toString();
+                        rep2=dataSnapshot.child("Ubicacion").child(data).child("pos").getValue().toString();
+                    }else{
+                        rep1="";
+                        rep2="";
+                    }
                     SavePreferences("KLetter",rep1);
                     Toast.makeText(getApplicationContext(),rep1+rep2,Toast.LENGTH_SHORT).show();
                 }else{

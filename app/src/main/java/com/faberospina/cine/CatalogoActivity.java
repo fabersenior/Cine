@@ -61,15 +61,9 @@ public class CatalogoActivity extends NavegacionActivity {
             String email = user.getEmail();
             String uid = user.getUid();
 
-/*            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext(),email,Toast.LENGTH_SHORT).show();*/
-
-
         }else{
-            logout();
+            //logout();
         }
-
-
         //Para el combo que se escogió
         //posicion_lista=getIntent().getExtras().getString("posicion");
 
@@ -83,9 +77,7 @@ public class CatalogoActivity extends NavegacionActivity {
                 switch (position){
                     case 0:
                         Intent intent = new Intent(getApplicationContext(),ShowActivity.class);
-                        intent.putExtra("posicion","uno");
                         SavePreferences("kPos",Integer.toString(position));
-                        //Toast.makeText(getApplicationContext(),"uno", Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                         break;
                     case 1:
@@ -168,7 +160,7 @@ public class CatalogoActivity extends NavegacionActivity {
             ImageView imagen = (ImageView)item.findViewById(R.id.imagen);
             imagen.setImageResource(productos[position].getIdImage());
 
-            TextView tPrecio=(TextView)item.findViewById(R.id.tPrecio);
+            TextView tPrecio=(TextView)item.findViewById(R.id.tPrecio_list);
             tPrecio.setText(String.valueOf(productos[position].getPrecio()));
 
             TextView tCombos=(TextView)item.findViewById(R.id.tCombos);

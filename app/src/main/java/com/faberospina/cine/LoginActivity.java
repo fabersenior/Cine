@@ -1,10 +1,13 @@
 package com.faberospina.cine;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,7 +25,10 @@ import com.facebook.FacebookSdk;//importar el sdk de fb
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -43,21 +49,30 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class LoginActivity extends AppCompatActivity {
 
+    public String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
+    private Firebase firebasedatos;
     private static final int RC_SIGN_IN =1 ;
     private static final String TAG = "LoginActivity";
     EditText eName, ePass;
+
+    Integer id=0;
+    String nombre, codigo, password;
     String user = "", pass = "", email = "", var = " ";
     SharedPreferences prefs;
+    boolean flag=true;
+    private Calendar calendar;
     SharedPreferences.Editor editor;
     private LoginButton loginButton;
     private CallbackManager callbackManager;
     private SignInButton mGoogleBtn;
     private GoogleApiClient mGoogleApiClient;
     private int option=0; //1.login con google , 2. login con fb
-
+    private int year;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
     /**
@@ -66,6 +81,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     private GoogleApiClient client;
 
+    @TargetApi(Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_login);
 
+        Firebase.setAndroidContext(getApplicationContext());
+        firebasedatos = new Firebase(FIREBASE_URL);
+
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
         callbackManager = CallbackManager.Factory.create();
 
         mGoogleBtn = (SignInButton) findViewById(R.id.sign_in_button);
@@ -83,6 +104,12 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+
+
+
+       // String dateString =String.valueOf(date);
+
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -97,6 +124,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         }).addApi(Auth.GOOGLE_SIGN_IN_API,gso).build();
 
+        SavePreferences("kConteo",String.valueOf(0));//reinicia el contador de # elementos en el carrito
+        SavePreferences("combo1","1");
+        SavePreferences("combo2","1");
+        SavePreferences("combo3","1");
+        SavePreferences("combo4","1");
 
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -163,6 +195,9 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) { //si la tarea no es exitosa
                     Toast.makeText(getApplicationContext(), "Error Login", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(), "Login Ok", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });//iniciar loggin con esas credenciales
@@ -206,35 +241,91 @@ public class LoginActivity extends AppCompatActivity {
         client.connect();
 
         firebaseAuth.addAuthStateListener(fireAuthStateListener);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
 // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+
         firebaseAuth.removeAuthStateListener(fireAuthStateListener);
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.disconnect();
+
     }
 
     private void goMainActivity() {
         Intent intent = new Intent(getApplicationContext(), CatalogoActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-
-
     }
 
-    public void btnIngresar(View view) {
+  /*  public  void  btnIngresar(View view){
+goMainActivity();
 
-        Intent intent2 = new Intent(getApplicationContext(), CatalogoActivity.class);
-        intent2.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent2);
+    }*/
+    public void btnIngresar(View view) {
+        flag=true;
+        int ok=0;
+        id=0;
+        Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
+
+        if(eName.length()==0 ){
+            Toast.makeText(getApplicationContext(),"Ingrese Usuario",Toast.LENGTH_SHORT).show();
+        }else{    //
+            ok++;
+            nombre=eName.getText().toString();
+        }
+        if (ePass.length()==0){
+            Toast.makeText(getApplicationContext(),"Ingrese contraseña",Toast.LENGTH_SHORT).show();
+        }else {
+            ok++;
+
+            password=ePass.getText().toString();
+        }
+        //Log.d("Noload",String.valueOf(flag));
+        if (ok>=2){
+            final Intent te=intent;
+            firebasedatos.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.d("Flag",String.valueOf(flag));
+                    Log.d("Ok",String.valueOf(id));
+                    while(flag) {
+                        codigo = Integer.toString(id);
+                        final String data = "Usuario" + codigo;
+                        if(dataSnapshot.child("Contactos").child(data).child("nombre").exists()){
+                            String nombrecito= dataSnapshot.child("Contactos").child(data).child("nombre").getValue().toString();
+                            String contrasena= dataSnapshot.child("Contactos").child(data).child("pass").getValue().toString();
+                            if (nombrecito.equals(nombre)){
+                                if(contrasena.equals(password)) {
+                                    String uu = "Bienvenido";
+                                    Toast.makeText(LoginActivity.this, uu, Toast.LENGTH_SHORT).show();
+                                    flag = false;
+                                    startActivity(te);
+                                    finish();
+                                    //cancel();
+                                }else{
+                                    Toast.makeText(LoginActivity.this,"La contraseña ingresada es invalida", Toast.LENGTH_SHORT).show();
+                                    flag=false;
+                                }
+                            }else {
+                                codigo = Integer.toString(id++);
+                            }
+                        }else{
+                            String uu="el usuario no existe";
+                            Toast.makeText(LoginActivity.this,uu, Toast.LENGTH_SHORT).show();
+                            flag=false;
+                        }
+                    }
+                }
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {        }
+            });
+/*            startActivity(intent);
+            finish();*/
+
+        }
+
 
     }
 
@@ -252,6 +343,7 @@ public class LoginActivity extends AppCompatActivity {
 
         if (option==2){
             callbackManager.onActivityResult(requestCode, resultCode, data);//logeo con fb
+           // goMainActivity();
         }else {
 
 
@@ -267,7 +359,6 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
         }
-
         if (requestCode == 1234 && resultCode == RESULT_OK) {
             //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
@@ -292,15 +383,22 @@ public class LoginActivity extends AppCompatActivity {
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Login Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
+
+    public void cancel(){
+
+        Intent intent = new Intent();
+        setResult(RESULT_CANCELED,intent);
+        finish();
+    }
+
+    private void SavePreferences(String key, String value){
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        //Toast.makeText(getApplicationContext(),prefs.getString("kName","08:00"),Toast.LENGTH_SHORT).show();
+        editor.commit();
+/*        Intent sd=new Intent(this,Secongtess.class);
+        startActivity(sd);*/
     }
 }

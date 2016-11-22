@@ -36,7 +36,7 @@ public class RegistroActivity extends AppCompatActivity{
 
     private int year,month, day;
     boolean flag=true;
-
+    boolean fecha;
     private TextView dateView;
 
     String nombre, correo,pass,codigo,sexo;
@@ -117,16 +117,9 @@ public class RegistroActivity extends AppCompatActivity{
             }
         }
 
-        if (eEmail.length()==0){
-            Toast.makeText(getApplicationContext(), "Ingrese Correo", Toast.LENGTH_SHORT)
-                    .show();
-
-        }else{
-            correo=eEmail.getText().toString();
-            intent.putExtra("kEmail",correo);
-            SavePreferences("kEmail",correo);
-
-
+        if (fecha){
+            intent.putExtra("año",year);
+            //editor.putString("kPass",pass);
             firebasedatos.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -140,7 +133,7 @@ public class RegistroActivity extends AppCompatActivity{
                             if (mail.equals(correo)){
                                 String uu="el usuario ya existe";
                                 Toast.makeText(RegistroActivity.this,uu, Toast.LENGTH_SHORT).show();
-                               // codigo = Integer.toString(id++);
+                                // codigo = Integer.toString(id++);
                                 flag=false;
                                 cancel();
                             }else {
@@ -158,29 +151,40 @@ public class RegistroActivity extends AppCompatActivity{
                                 final Firebase firebase;
                                 final Firebase firebase1;
                                 flag = false;
-                                ok[0]++;//4
+                                ok[0]++;//5
                                 firebase = firebasedatos.child("Contactos"); //creamos un hijo de firebasedatos
                                 firebase1= firebase.child("Usuario" + id);
                                 Contacto contacto = new Contacto(nombre, pass, correo, String.valueOf(id), year);
                                 firebase1.setValue(contacto);
                                 Toast.makeText(getApplicationContext(), "Usuario Agregado", Toast.LENGTH_SHORT).show();
                                 Log.d("valor k:",Integer.toString(ok[0]));
-                                if (ok[0] >=4){
+                                if (ok[0] >=5){
                                     setResult(RESULT_OK,intent);
                                     finish();
                                 }
                             }
-
-
-                       }
-
-
-
+                        }
                     }
                 }
                 @Override
                 public void onCancelled(FirebaseError firebaseError) {        }
             });
+
+        }else{
+            Toast.makeText(getApplicationContext(), "Ingrese Fecha", Toast.LENGTH_SHORT)
+                    .show();
+        }
+        if (eEmail.length()==0){
+            Toast.makeText(getApplicationContext(), "Ingrese Correo", Toast.LENGTH_SHORT)
+                    .show();
+
+        }else{
+            correo=eEmail.getText().toString();
+            intent.putExtra("kEmail",correo);
+            SavePreferences("kEmail",correo);
+            ok[0]++;//4
+
+
 
           //  Toast.makeText(RegistroActivity.this,Boolean.toString(flag), Toast.LENGTH_SHORT).show();
 
@@ -235,6 +239,7 @@ public class RegistroActivity extends AppCompatActivity{
         dateView.setText(new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year));
         dateView.setTextColor(getResources().getColor(white));
+        fecha=true;
 /*
         Toast.makeText(getApplicationContext(),new StringBuilder().append(day).append("/")
                 .append(month).append("/").append(year),Toast.LENGTH_SHORT).show();

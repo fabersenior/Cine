@@ -101,7 +101,7 @@ public class PedidoFragment extends Fragment {
             View item = inflater.inflate(R.layout.layout_item1,null);
             TextView nombre = (TextView) item.findViewById(R.id.tCombos);
             nombre.setText(datos[position].getNombre());
-            TextView price= (TextView) item.findViewById(R.id.tPrecio);
+            TextView price= (TextView) item.findViewById(R.id.tPrecio_list);
             if(datos[position].getPrecio()>0) {
                 price.setText(" $" + Integer.toString(datos[position].getPrecio()));
             }

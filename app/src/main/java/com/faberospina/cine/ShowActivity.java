@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +25,10 @@ public class ShowActivity extends AppCompatActivity {
     SharedPreferences prefs;
     ImageView imageShow;
     private  int pos;
+    int conteo=0;
     TextView title,precio,des1,des2;
+
+    EditText cantidad;
 
     private  String codigo;
     private String text1,text2,text3,text4;
@@ -53,6 +57,7 @@ public class ShowActivity extends AppCompatActivity {
         precio= (TextView) findViewById(R.id.price);
         des1= (TextView) findViewById(R.id.des1);
         des2= (TextView) findViewById(R.id.des2);
+        cantidad=(EditText) findViewById(R.id.eCantidad);
 
         firebasedatos.setAndroidContext(this);//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
@@ -70,12 +75,18 @@ public class ShowActivity extends AppCompatActivity {
                     text3 =dataSnapshot.child("catalogo").child(data).child("nombre").getValue().toString();
                     text4 = dataSnapshot.child("catalogo").child(data).child("precio").getValue().toString();
 
+/*
+                    SavePreferences("k_Nombre",text3);//enviar por preferencias compartidas el texto
+                    SavePreferences("k_precio",text4); // estas prefs enviarlas a resumenActivity
+                    SavePreferences("k_descripcion1",text1);
+                    SavePreferences("k_descripcion2",text2);
+*/
+
                     title.setText(text3);
                     precio.setText(text4);
                     des1.setText(text1);
                     des2.setText(text2);
-                    //Toast.makeText(getApplicationContext(),"DATOS",Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(getApplicationContext(),text3,Toast.LENGTH_SHORT).show();
+
 
                 }else{
                     Toast.makeText(getApplicationContext(),"no datos",Toast.LENGTH_SHORT).show();
@@ -87,42 +98,59 @@ public class ShowActivity extends AppCompatActivity {
             public void onCancelled(FirebaseError firebaseError) {        }
         });
 
-
-/*    DELAY DE 1 segundo
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Do something after 5s = 5000ms
-
-            }
-        }, 1000);*/
-
-
         switch (pos){
             case 0://obtenerlas de la base de datos!
                 imageShow.setImageResource(R.drawable.combo1);
                 break;
-
             case 1:
                 imageShow.setImageResource(R.drawable.combo2);
                 break;
-
             case 2:
                 imageShow.setImageResource(R.drawable.combo3);
                 break;
-
             case 3:
                 imageShow.setImageResource(R.drawable.combo_grande_1);
                 break;
-
-
         }
     }
     public  void btn_Añadir_Carrito(View view){
 
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
+        SavePreferences("kCantidad",cantidad.getText().toString());
+        conteo = Integer.parseInt(prefs.getString("kConteo","07"));
+        conteo++;
+        SavePreferences("kConteo",String.valueOf(conteo));
+        switch (pos){
+            case 0://obtenerlas de la base de datos!
+              // imageShow.setImageResource(R.drawable.combo1);
+                SavePreferences("combo1","ok");
+                break;
+            case 1:
+                //imageShow.setImageResource(R.drawable.combo2);
+                SavePreferences("combo2","ok");
+                break;
+            case 2:
+                //imageShow.setImageResource(R.drawable.combo3);
+                SavePreferences("combo3","ok");
+                break;
+            case 3:
+                //imageShow.setImageResource(R.drawable.combo_grande_1);
+                SavePreferences("combo4","ok");
+                break;
+        }
+
         startActivity(intent);
         finish();
+    }
+
+    private void SavePreferences(String key, String value){
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        //Toast.makeText(getApplicationContext(),prefs.getString("kName","08:00"),Toast.LENGTH_SHORT).show();
+        editor.commit();
+/*        Intent sd=new Intent(this,Secongtess.class);
+        startActivity(sd);*/
     }
 }

@@ -53,7 +53,9 @@ public class NavegacionActivity extends AppCompatActivity {
 
 
         }else{
-            goLoginActivity();
+
+
+           // goLoginActivity();
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.contenedorPrincipal);

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -26,7 +27,7 @@ public class EfectivoActivity extends AppCompatActivity {
     private String letter,sPos;
     private String kcant1,kcant2,kcant3,kcant4,ktotal;
     private  int pos, imag=0;
-
+    TextView tpagar;
     public long p;
     long hat=1450656000000L;
     long hat2=2678400000L;//hat2=28908000000L; para los meses
@@ -47,9 +48,8 @@ public class EfectivoActivity extends AppCompatActivity {
         kcant3= prefs.getString("kCantidad3","0");
         kcant4= prefs.getString("kCantidad4","0");
         ktotal= prefs.getString("keyTotal","0");
-
-
-
+        tpagar=(TextView)findViewById(R.id.tpagar);
+        tpagar.setText(ktotal);
 
     }
     public void btn_ComprarEfec(View view){
@@ -103,7 +103,20 @@ public class EfectivoActivity extends AppCompatActivity {
             @Override
             public void onCancelled(FirebaseError firebaseError) {        }
         });
+
+        SavePreferences("kCantidad1","0");
+        SavePreferences("kCantidad2","0");
+        SavePreferences("kCantidad3","0");
+        SavePreferences("kCantidad4","0");
         startActivity(intent);
         finish();
+    }
+
+
+    private void SavePreferences(String key, String value){
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }

@@ -129,6 +129,9 @@ public class LoginActivity extends BaseActivity {
         SavePreferences("combo2","1");
         SavePreferences("combo3","1");
         SavePreferences("combo4","1");
+        SavePreferences("kName","0");
+        SavePreferences("kPass","0");
+        SavePreferences("kEmail1","0");
 
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
@@ -298,6 +301,8 @@ public class LoginActivity extends BaseActivity {
                                     Toast.makeText(LoginActivity.this, uu, Toast.LENGTH_SHORT).show();
                                     flag = false;
                                     SavePreferences("kFormulario","ok");
+                                    SavePreferences("kName_R",nombrecito);
+                                    SavePreferences("kPass_R",contrasena);
                                     startActivity(te);
                                     finish();
                                     //cancel();

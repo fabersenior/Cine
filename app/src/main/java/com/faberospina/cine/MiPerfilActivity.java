@@ -26,7 +26,7 @@ public class MiPerfilActivity extends NavegacionActivity {
         mail=(TextView)findViewById(R.id.tCorreo);
 
         prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
-        correo = prefs.getString("kEmail1","Sin_permisos");
+        correo = prefs.getString("kEmail","Sin_permisos");
         usuario = prefs.getString("kName","Sin_Permisos");
         contrasena = prefs.getString("kPass","07");
 

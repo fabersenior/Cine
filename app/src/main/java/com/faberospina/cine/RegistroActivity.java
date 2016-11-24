@@ -81,7 +81,7 @@ public class RegistroActivity extends AppCompatActivity{
             Toast.makeText(getApplicationContext(),"Nombre Vacio",Toast.LENGTH_SHORT).show();
         }else{
             intent.putExtra("kName",eName.getText().toString());
-            SavePreferences("kName",eName.getText().toString());
+            SavePreferences("kName_R",eName.getText().toString());
 
             ok[0]++;
         }
@@ -108,7 +108,7 @@ public class RegistroActivity extends AppCompatActivity{
                         .show();
                 intent.putExtra("kPass",pass);
                 //editor.putString("kPass",pass);
-                SavePreferences("kPass",pass);
+                SavePreferences("kPass_R",pass);
                 ok[0]++;//3
 
             }else{
@@ -181,7 +181,7 @@ public class RegistroActivity extends AppCompatActivity{
         }else{
             correo=eEmail.getText().toString();
             intent.putExtra("kEmail",correo);
-            SavePreferences("kEmail",correo);
+            SavePreferences("kEmail_R",correo);
             ok[0]++;//4
 
 

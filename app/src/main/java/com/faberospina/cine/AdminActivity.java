@@ -24,6 +24,7 @@ public class AdminActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     Integer id=0;
     String rep1,rep2;
+    SharedPreferences prefs;
 
     private String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
     String codigo;
@@ -40,8 +41,15 @@ public class AdminActivity extends AppCompatActivity {
         firebasedatos.setAndroidContext(this);//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
 
+        prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        rep1= prefs.getString("letra","0");//obtener letra y posicion de preferencias que viene de pedidos admin
+        rep2=prefs.getString("posillo","0");
 
-        final String data = "Silla"+codigo;//codigo tiene al id que se quiere buscar de ubicacion
+        Toast.makeText(getApplicationContext(),rep1+rep2,Toast.LENGTH_SHORT).show();
+
+
+
+/*        final String data = "Silla"+codigo;//codigo tiene al id que se quiere buscar de ubicacion
 
         firebasedatos.addValueEventListener(new ValueEventListener() {
             @Override
@@ -58,7 +66,7 @@ public class AdminActivity extends AppCompatActivity {
                         rep2="";
                     }
                     SavePreferences("KLetter",rep1);
-                    Toast.makeText(getApplicationContext(),rep1+rep2,Toast.LENGTH_SHORT).show();
+
                 }else{
                     Toast.makeText(getApplicationContext(),"no datos",Toast.LENGTH_SHORT).show();
                 }
@@ -67,7 +75,7 @@ public class AdminActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {        }
-        });
+        });*/
 
         PagerAdapter pagerAdapter = new PagerAdapter(getSupportFragmentManager());
         mViewPager = (ViewPager) findViewById(R.id.pager);

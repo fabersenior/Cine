@@ -43,7 +43,7 @@ public class FormularioActivity extends NavegacionActivity {
     EditText apellido,nombres,telefono,correos,identificacion,tarjeta,caducidad,codigos;
 
     public long p;
-    long hat=1450656000000L;
+    long hat=1450656000000L;//para los años desde 1970
     long hat2=2678400000L;//hat2=28908000000L; para los meses
 
 
@@ -57,18 +57,18 @@ public class FormularioActivity extends NavegacionActivity {
         getLayoutInflater().inflate(R.layout.activity_formulario, contentFrameLayout);
 
         prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences",Context.MODE_PRIVATE);
-        letter=prefs.getString("kLetra","07");
-        pos=Integer.parseInt(prefs.getString("kPosicion","07"));
+        letter=prefs.getString("kLetra","0");
+        pos=Integer.parseInt(prefs.getString("kPosicion","0"));
 
-        user=prefs.getString("kName","01");
-        letter=prefs.getString("kLetra","01");
-        sPos= prefs.getString("kPosicion","01");
+        user=prefs.getString("kName","0");
+        letter=prefs.getString("kLetra","0");
+        sPos= prefs.getString("kPosicion","0");
         pos=Integer.valueOf(sPos);
-        kcant1= prefs.getString("kCantidad1","01");
-        kcant2= prefs.getString("kCantidad2","01");
-        kcant3= prefs.getString("kCantidad3","01");
-        kcant4= prefs.getString("kCantidad4","01");
-        ktotal= prefs.getString("keyTotal","01");
+        kcant1= prefs.getString("kCantidad1","0");
+        kcant2= prefs.getString("kCantidad2","0");
+        kcant3= prefs.getString("kCantidad3","0");
+        kcant4= prefs.getString("kCantidad4","0");
+        ktotal= prefs.getString("keyTotal","0");
         //sdf = new SimpleDateFormat("HH:mm:ss");
 
 
@@ -128,7 +128,33 @@ public class FormularioActivity extends NavegacionActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 codigo = Integer.toString(id);
                 while(flag) {
+
+                    codigo = Integer.toString(id);
                     final String data = "Silla" + codigo;
+                    if (dataSnapshot.child("Ubicacion").child(data).exists()) {
+                        codigo = Integer.toString(id++);
+                        flag = true;
+                    } else {
+                        final Firebase firebase;
+                        final Firebase firebase1;
+                        int k1,k2,k3,k4;
+                        k1=Integer.parseInt(kcant1);
+                        k2=Integer.parseInt(kcant2);
+                        k3=Integer.parseInt(kcant3);
+                        k4=Integer.parseInt(kcant4);
+                        flag = false;
+                        firebase = firebasedatos.child("Ubicacion" ); //creamos un hijo de firebasedatos
+                        firebase1=firebase.child("Silla"+ id);
+                        Silla silla = new Silla(letter,pos,Integer.parseInt(ktotal),p,user
+                                ,k1
+                                ,k2
+                                ,k3
+                                ,k4);
+                        firebase1.setValue(silla);//agregamos a la base de datos
+
+                    }
+
+/*                    final String data = "Silla" + codigo;
                     if (dataSnapshot.child("Ubicacion").child(data).exists()) {
                         if (dataSnapshot.child("Ubicacion").child(data).child("letter").exists()
                                 && dataSnapshot.child("Ubicacion").child(data).child("pos").exists()) {
@@ -156,7 +182,7 @@ public class FormularioActivity extends NavegacionActivity {
                     } else {
                         codigo = Integer.toString(id++);
 
-                    }
+                    }*/
 
                 }
             }
@@ -165,11 +191,12 @@ public class FormularioActivity extends NavegacionActivity {
             public void onCancelled(FirebaseError firebaseError) {        }
         });
 
-
-
-
         if(ok>=7) {
             startActivity(intent);
+            SavePreferences("kCantidad1","0");
+            SavePreferences("kCantidad2","0");
+            SavePreferences("kCantidad3","0");
+            SavePreferences("kCantidad4","0");
             SavePreferences("kFormulario","ok");
             finish();
         }

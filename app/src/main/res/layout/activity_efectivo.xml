@@ -109,6 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pagar"
+                        android:id="@+id/tpagar"
                         android:textColor="@color/white"
                         android:textSize="18sp"/>
                     <EditText

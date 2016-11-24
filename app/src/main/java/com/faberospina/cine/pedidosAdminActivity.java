@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class pedidosAdminActivity extends AppCompatActivity {
 
     private Integer id=0;
     private String codigo;
-    private String hora,idImagen,letter,posi;
+    private String hora,idImagen,letter,posi,k1,k2,k3,k4,user;
 
     private String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
     private Firebase firebasedatos;
@@ -47,13 +48,20 @@ public class pedidosAdminActivity extends AppCompatActivity {
     ArrayList<Silla> list_silla = new ArrayList<Silla>();
     private boolean flag=true;
     private int HLONG=0,konteo=0;
+    private long mas=100000000000L;
+    private long mhora=18000000L;
+    private long minuto=1080000L;
 
     SharedPreferences prefs;
 
    private ArrayList<Lista_entrada> datos= new ArrayList<Lista_entrada>();
 
+    private ArrayList<Silla> datos1= new ArrayList<Silla>();
+
     Adapter adapterData;
     ListView lst;
+
+    private  String da;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +71,15 @@ public class pedidosAdminActivity extends AppCompatActivity {
 
         prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences",Context.MODE_PRIVATE);
 
+        da=prefs.getString("borrar","0");
+
         firebasedatos.setAndroidContext(getApplicationContext());//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
 
         MyAsinc myAsincTask= new MyAsinc();
         myAsincTask.execute();
 
-        adapterData = new Adapter(getApplicationContext(),datos);
+        adapterData = new Adapter(getApplicationContext(),list_silla);
         lst = (ListView) findViewById(R.id.lstf);
         lst.setAdapter(adapterData);
 
@@ -79,7 +89,12 @@ public class pedidosAdminActivity extends AppCompatActivity {
 
             public void onItemClick(AdapterView<?> parent, View view, int i, long l) {
                 Intent intent = new Intent(getApplicationContext(), AdminActivity.class);// crea un nuevo intent
-                //intent.putExtra("kPos",C[i]);
+                //intent.putExtra("kPos",);
+                String lit,pot;
+                lit =list_silla.get(i).getLetter();
+                pot= String.valueOf(list_silla.get(i).getPos());
+                SavePreferences("letra",lit);
+                SavePreferences("posillo",pot);
                 startActivity(intent);
             }
         });
@@ -89,7 +104,14 @@ public class pedidosAdminActivity extends AppCompatActivity {
 
     public void PUSH_ADAPTADOR(){
 
-        adapterData = new Adapter(getApplicationContext(),datos);
+
+        if (da.equals("ok")){
+            list_silla.remove(0);//primera ubicacion de la lista de orden
+            SavePreferences("borrar","0");
+            lst.invalidateViews();
+            }
+
+        adapterData = new Adapter(getApplicationContext(),list_silla);
         lst = (ListView) findViewById(R.id.lstf);
         lst.setAdapter(adapterData);
         //Toast.makeText(getApplicationContext(),String.valueOf(s),Toast.LENGTH_SHORT).show();
@@ -123,22 +145,39 @@ public class pedidosAdminActivity extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     codigo = Integer.toString(id);
                     while (flag){
-                        final String data = "Silla"+codigo;
+                        String data = "Silla"+codigo;
                         if (dataSnapshot.child("Ubicacion").child(data).exists()){
                             hora=dataSnapshot.child("Ubicacion").child(data).child("hora").getValue().toString();
                             letter=dataSnapshot.child("Ubicacion").child(data).child("letter").getValue().toString();
                             posi=dataSnapshot.child("Ubicacion").child(data).child("pos").getValue().toString() ;
                             idImagen =dataSnapshot.child("Ubicacion").child(data).child("idImagen").getValue().toString();
+
+                            k1= dataSnapshot.child("Ubicacion").child(data).child("k1").getValue().toString();
+                            k2= dataSnapshot.child("Ubicacion").child(data).child("k2").getValue().toString();
+                            k3= dataSnapshot.child("Ubicacion").child(data).child("k3").getValue().toString();
+                            k4= dataSnapshot.child("Ubicacion").child(data).child("k4").getValue().toString();
+                            user= dataSnapshot.child("Ubicacion").child(data).child("user").getValue().toString();
                             HLONG=Integer.parseInt(hora);
 
-                            Silla sp1=new Silla(letter,Integer.parseInt(posi),Integer.parseInt(idImagen),Integer.parseInt(hora));
+                            Silla sp1=new Silla(letter,Integer.parseInt(posi),Integer.parseInt(idImagen),
+                                    Integer.parseInt(hora),user,Integer.parseInt(k1),Integer.parseInt(k2),
+                                    Integer.parseInt(k3),Integer.parseInt(k4) );
 
                             list_silla.add(sp1);
                             s.add(HLONG);
                             codigo = Integer.toString(++id);
 
                         }else {
-                            flag=false;
+                            int c= Integer.parseInt(codigo);
+                            c=c+1;
+                            codigo = String.valueOf(c);
+                            data = "Silla"+codigo;
+                            if (dataSnapshot.child("Ubicacion").child(data).exists()){
+                                codigo = Integer.toString(++id);
+                            }else{
+                                flag=false;
+                            }
+
                         }
                     }
 
@@ -151,12 +190,11 @@ public class pedidosAdminActivity extends AppCompatActivity {
 
 
                     //Collections.sort(list_silla);
-
-                    Lista_entrada l1= new Lista_entrada(R.drawable.textura_fondo,"",0,"","");
-                    datos.add(l1);
+/*                    Lista_entrada l1= new Lista_entrada(R.drawable.textura_fondo,"",0,"","");
+                    datos.add(l1);*/
 
                     Collections.sort(s);
-                    PUSH_ADAPTADOR();
+                   PUSH_ADAPTADOR();
 
                 }
                 @Override
@@ -177,41 +215,56 @@ public class pedidosAdminActivity extends AppCompatActivity {
  /*           MainActivity.Adapter adapter = new MainActivity.Adapter(getApplicationContext());
             list.setAdapter(adapter);*/
            // Collections.sort(s);
-            Toast.makeText(getApplicationContext(),String.valueOf(s),Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(),String.valueOf(s),Toast.LENGTH_SHORT).show();
 
-            PUSH_ADAPTADOR();
+            //PUSH_ADAPTADOR();
             super.onPostExecute(aVoid);
            // Collections;
         }
     }
 
+    private void SavePreferences(String key, String value){
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        //Toast.makeText(getApplicationContext(),prefs.getString("kName","08:00"),Toast.LENGTH_SHORT).show();
+        editor.commit();
+/*        Intent sd=new Intent(this,Secongtess.class);
+        startActivity(sd);*/
+    }
 
-    class Adapter extends ArrayAdapter<Lista_entrada> {
-        public Adapter(Context context, ArrayList<Lista_entrada> datos) {
-            super(context,R.layout.layout_item1,datos);
+
+    class Adapter extends ArrayAdapter<Silla> {
+        public Adapter(Context context, ArrayList<Silla> datos) {
+            super(context,R.layout.layout_list_orden,datos);
         }
         @NonNull
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
+            long hr=0L;
             String flag="";
             LayoutInflater inflater = LayoutInflater.from(getContext());
-            View item = inflater.inflate(R.layout.layout_item1,null);
+            View item = inflater.inflate(R.layout.layout_list_orden,null);
 
             TextView nombre = (TextView)item.findViewById(R.id.tCombos);
-            nombre.setText((datos.get(position)).getNombre());
+            nombre.setText((list_silla.get(position)).getUser());
 
-            TextView descripcion = (TextView)item.findViewById(R.id.tDescripcion1);
-            descripcion.setText((datos.get(position)).getInfo());
-
-            TextView precio = (TextView)item.findViewById(R.id.tPrecio_list);
-            precio.setText(String.valueOf((datos.get(position)).getPrecio()));//convertir el entero a String
+            TextView descripcion = (TextView)item.findViewById(R.id.tPrecio_list);
+            descripcion.setText(String.valueOf(list_silla.get(position).getIdImagen()));
 
             ImageView imagen = (ImageView) item.findViewById(R.id.imagen);
-            imagen.setImageResource((datos.get(position)).getIdImagen());
+            imagen.setImageResource(R.drawable.combo1);//Imagen Real
 
-            TextView tDescripcion2=(TextView)item.findViewById(R.id.tDescripcion2);
-            tDescripcion2.setText(datos.get(position).getInfo2());
+            TextView precio = (TextView)item.findViewById(R.id.tCantidad);//Total del pedido idImagen
+
+            precio.setText(new StringBuilder().append(String.valueOf((list_silla.get(position)).getLetter())).append(String.valueOf(list_silla.get(position).getPos())).toString());//convertir el entero a String
+
+            TextView tDescripcion2=(TextView)item.findViewById(R.id.tHora);
+            hr=list_silla.get(position).getHora()*1000;
+
+            tDescripcion2.setText(DateFormat.format("HH:mm:ss", hr+mas-mhora+minuto));//Hora
 
          return (item);
         }

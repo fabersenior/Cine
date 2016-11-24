@@ -67,13 +67,36 @@ public class CatalogoActivity extends NavegacionActivity {
             String email = user.getEmail();
             String uid = user.getUid();
 
-            SavePreferences("kName",name);
-            SavePreferences("kPass",uid);
-            SavePreferences("kEmail1",email);
+            if(KEY_FOR=="ok"){
+                //cambiar KNAME por el del formulario
+
+                String name1 = prefs.getString("kName_R","0");
+                String email1 = prefs.getString("kEmail_R","0");
+                String uid1 = prefs.getString("kPass_R","0");
+
+                SavePreferences("kName",name1);
+                SavePreferences("kPass",uid1);
+                SavePreferences("kEmail1",email1);
+
+            }else {
+                SavePreferences("kName",name);
+                SavePreferences("kPass",uid);
+                SavePreferences("kEmail1",email);
+            }
+
+
 
         }else{
 
             if(KEY_FOR=="ok"){
+
+                String name1 = prefs.getString("kName_R","0");
+                String email1 = prefs.getString("kEmail_R","0");
+                String uid1 = prefs.getString("kPass_R","0");
+
+                SavePreferences("kName",name1);
+                SavePreferences("kPass",uid1);
+                SavePreferences("kEmail1",email1);
 
             }else {
                 SavePreferences("kFormulario","01");

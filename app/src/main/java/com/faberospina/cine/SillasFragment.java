@@ -3,6 +3,7 @@ package com.faberospina.cine;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -35,29 +36,11 @@ import java.util.ArrayList;
 public class SillasFragment extends Fragment {
 
     ImageAdapter adapterData;
-
+    SharedPreferences prefs;
+    private String k,p;
+    private int position,i;
     private ArrayList<Silla> datos = new ArrayList<Silla>();
 
-/*    private Silla[] datos= new Silla[]{
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_png),
-            new Silla("",0,R.drawable.silla_verde)
-    };*/
 
     public SillasFragment() {
         // Required empty public constructor
@@ -71,11 +54,56 @@ public class SillasFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_sillas, container, false);
         GridView gridView=(GridView)view.findViewById(R.id.gsillas);
 
+        prefs = getActivity().getSharedPreferences("com.sp.main_preferences", android.content.Context.MODE_PRIVATE);
 
-        for(int k=0;k<18;k++){
-           Silla silla=new Silla("",0,R.drawable.silla_png);
+        k=prefs.getString("letra","0");
+        p=prefs.getString("posillo","0");
+
+        position=Integer.parseInt(p)-1;
+
+        for(int k=0;k<=17;k++) {
+            Silla silla = new Silla("", 0, R.drawable.silla_png);
             datos.add(silla);
         }
+
+        switch (k){
+            case "A" :
+                for(int k=0;k<=5;k++){
+                   // Silla silla=new Silla("",0,R.drawable.silla_png);
+                    if (k==position){
+                        Silla sillav=new Silla("",0,R.drawable.silla_verde);
+                        datos.add(position,sillav);
+                        datos.remove(datos.size()-1);
+                    }
+                    //datos.add(silla);
+                }
+
+            break;
+            case "B" :
+                for(int k=6;k<=11;k++){
+                    //Silla silla=new Silla("",0,R.drawable.silla_png);
+                    if (k==position+6){
+                        Silla sillav=new Silla("",0,R.drawable.silla_verde);
+                        datos.add(position+6,sillav);
+                        datos.remove(datos.size()-1);
+                    }
+                    //datos.add(silla);
+                }
+
+                break;
+            case "C" :
+                for(int k=12;k<=17;k++){
+                    //Silla silla=new Silla("",0,R.drawable.silla_png);
+                    if (k==position+12){
+                        Silla sillav=new Silla("",0,R.drawable.silla_verde);
+                        datos.add(position+12,sillav);
+                        datos.remove(datos.size()-1);
+                    }
+                    //datos.add(silla);
+                }
+                break;
+        }
+
 
        adapterData = new ImageAdapter(getContext(),datos);
 
@@ -83,7 +111,7 @@ public class SillasFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(),"hola"+position,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),position,Toast.LENGTH_SHORT).show();
 
             }
         });

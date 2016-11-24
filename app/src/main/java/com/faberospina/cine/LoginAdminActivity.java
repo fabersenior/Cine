@@ -1,6 +1,8 @@
 package com.faberospina.cine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,10 @@ public class LoginAdminActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login_admin);
         editText1=(EditText)findViewById(R.id.editText);
         editText2=(EditText)findViewById(R.id.editText2);
+
+        SavePreferences("letra","0");
+        SavePreferences("posillo","0");
+        SavePreferences("borrar","-1");
 
     }
 
@@ -71,6 +77,15 @@ public class LoginAdminActivity extends AppCompatActivity {
                 Toast.makeText(LoginAdminActivity.this,"La usuario ingresado es invalido", Toast.LENGTH_SHORT).show();
             }
         }
+
+    }
+
+    private void SavePreferences(String key, String value){
+
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
 
     }
 }

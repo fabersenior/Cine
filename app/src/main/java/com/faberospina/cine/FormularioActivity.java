@@ -9,7 +9,10 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -24,15 +27,22 @@ public class FormularioActivity extends NavegacionActivity {
 
     SharedPreferences prefs;
     private Integer id=0;
-    SimpleDateFormat sdf;
+   // SimpleDateFormat sdf;
     private String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
-    String codigo;
+    private String codigo;
     private Firebase firebasedatos;
     private boolean flag=true;
-    String letter="";
-    int pos=-1;
-    public long p;
 
+    private String user;
+
+    int pos=-1;
+
+    private String letter,sPos;
+    private String kcant1,kcant2,kcant3,kcant4,ktotal;
+    int ok;
+    EditText apellido,nombres,telefono,correos,identificacion,tarjeta,caducidad,codigos;
+
+    public long p;
     long hat=1450656000000L;
     long hat2=2678400000L;//hat2=28908000000L; para los meses
 
@@ -47,26 +57,66 @@ public class FormularioActivity extends NavegacionActivity {
         getLayoutInflater().inflate(R.layout.activity_formulario, contentFrameLayout);
 
         prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences",Context.MODE_PRIVATE);
-
         letter=prefs.getString("kLetra","07");
         pos=Integer.parseInt(prefs.getString("kPosicion","07"));
 
-        sdf = new SimpleDateFormat("HH:mm:ss");
+        user=prefs.getString("kName","01");
+        letter=prefs.getString("kLetra","01");
+        sPos= prefs.getString("kPosicion","01");
+        pos=Integer.valueOf(sPos);
+        kcant1= prefs.getString("kCantidad1","01");
+        kcant2= prefs.getString("kCantidad2","01");
+        kcant3= prefs.getString("kCantidad3","01");
+        kcant4= prefs.getString("kCantidad4","01");
+        ktotal= prefs.getString("keyTotal","01");
+        //sdf = new SimpleDateFormat("HH:mm:ss");
 
 
+        apellido=(EditText)findViewById(R.id.apellido);
+        nombres=(EditText)findViewById(R.id.nombre);
+        telefono=(EditText)findViewById(R.id.telefono);
+        correos=(EditText)findViewById(R.id.correos);
+        identificacion=(EditText)findViewById(R.id.identificacion);
+        tarjeta=(EditText)findViewById(R.id.tarjeta);
+        caducidad=(EditText)findViewById(R.id.caducidad);
+        codigos=(EditText)findViewById(R.id.codigo);
 
     }
 
 
     public void btn_Comprar(View view){
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
-        SavePreferences("kCompra","ok");
+
+        if(apellido.length()==0){
+            Toast.makeText(getApplicationContext(),"Apellidos Vacio",Toast.LENGTH_SHORT).show();
+        }else ok++;
+        if(nombres.length()==0) {
+            Toast.makeText(getApplicationContext(), "Nombres vacio", Toast.LENGTH_SHORT).show();
+        }else ok++;
+        if(telefono.length()==0){
+            Toast.makeText(getApplicationContext(), "Telefono vacio", Toast.LENGTH_SHORT).show();
+        }else ok++;
+        if (identificacion.length()==0){
+            Toast.makeText(getApplicationContext(), "Identificacion vacio", Toast.LENGTH_SHORT).show();
+        }else ok++;
+        if (tarjeta.length()==0) {
+            Toast.makeText(getApplicationContext(), "Número de tarjeta vacio", Toast.LENGTH_SHORT).show();
+        } else ok++;
+        if (caducidad.length()==0){
+            Toast.makeText(getApplicationContext(), "Fecha de caducidad vacio", Toast.LENGTH_SHORT).show();
+        } else ok++;
+        if(codigos.length()==0){
+            Toast.makeText(getApplicationContext(), "Codigo de seguridad vacio", Toast.LENGTH_SHORT).show();
+        }else ok++;
+
+
 
         final long date = System.currentTimeMillis();//1800000 son 5 horas
         p=date-hat-hat2-18000000;//-hat2
         p=p/1000;
-        String dateString = sdf.format(p);//new Date()
-        Toast.makeText(getApplicationContext(),dateString,Toast.LENGTH_SHORT).show();
+
+        //String dateString = sdf.format(p);//new Date()
+       // Toast.makeText(getApplicationContext(),DateFormat.format("HH:mm:ss", p),Toast.LENGTH_SHORT).show();
 
         firebasedatos.setAndroidContext(this);//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
@@ -90,7 +140,10 @@ public class FormularioActivity extends NavegacionActivity {
                                 Firebase firebase1;
                                 firebase = firebasedatos.child("Ubicacion");//Nombre de la tabla
                                 firebase1 = firebase.child(data);//item de la tabla catalogo
-                                Silla silla = new Silla(finalLetter, finalPos, 0, p);
+                                Silla silla = new Silla(letter,pos,Integer.parseInt(ktotal),p,user,Integer.parseInt(kcant1)
+                                        ,Integer.parseInt(kcant2)
+                                        ,Integer.parseInt(kcant3)
+                                        ,Integer.parseInt(kcant4));
                                 firebase1.setValue(silla);//agregamos a la base de datos
                                 flag = false;
                             } else{
@@ -115,9 +168,11 @@ public class FormularioActivity extends NavegacionActivity {
 
 
 
-
-        startActivity(intent);
-        finish();
+        if(ok>=7) {
+            startActivity(intent);
+            SavePreferences("kFormulario","ok");
+            finish();
+        }
     }
 
 

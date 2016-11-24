@@ -49,21 +49,28 @@
         android:layout_marginTop="15sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:id="@+id/formas">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tarjeta de crédito"
+            android:id="@+id/bTarjeta"
+            android:onClick="RadioClick"
             android:textColor="@color/white"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PSE"
+            android:id="@+id/bPSE"
+            android:onClick="RadioClick"
             android:textColor="@color/white"/>
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Efectivo"
+            android:id="@+id/bEfectivo"
+            android:onClick="RadioClick"
             android:textColor="@color/white"/>
     </RadioGroup>
     <Button
@@ -76,6 +83,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:onClick="btn_Continuar"/>
+        android:id="@+id/btn_Continuar"/>
 
 </LinearLayout>

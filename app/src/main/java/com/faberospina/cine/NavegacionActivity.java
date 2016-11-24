@@ -1,6 +1,8 @@
 package com.faberospina.cine;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -28,6 +30,8 @@ public class NavegacionActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private ListView listView;
     private ActionBarDrawerToggle drawerToggle;
+    SharedPreferences prefs;
+    private  String KEY_FOR="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +39,10 @@ public class NavegacionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_navegacion);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        KEY_FOR= prefs.getString("kFormulario","01");
+
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null){
@@ -45,17 +53,24 @@ public class NavegacionActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//usuario actual
         if (user!=null){
             String name = user.getDisplayName();
+
             String email = user.getEmail();
             String uid = user.getUid();
-
+            SavePreferences("kName",name);
+            SavePreferences("kPass",uid);
+            //SavePreferences("kEmail1",email);
 /*            Toast.makeText(getApplicationContext(),name,Toast.LENGTH_SHORT).show();
             Toast.makeText(getApplicationContext(),email,Toast.LENGTH_SHORT).show();*/
 
-
         }else{
+            if(KEY_FOR=="ok"){
+
+            }else {
+                SavePreferences("kFormulario","01");
+                logout();
+            }
 
 
-           // goLoginActivity();
         }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.contenedorPrincipal);
@@ -124,5 +139,12 @@ public class NavegacionActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void SavePreferences(String key, String value){
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(key, value);
+        editor.commit();
     }
 }

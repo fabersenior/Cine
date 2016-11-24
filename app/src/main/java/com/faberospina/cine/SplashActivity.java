@@ -23,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
         this.supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);
         SavePreferences("kCompra","1");
+        SavePreferences("kFormulario","1");
         //commit 3
 
         TimerTask task = new TimerTask() {

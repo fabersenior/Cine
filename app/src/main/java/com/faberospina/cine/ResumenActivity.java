@@ -55,13 +55,7 @@ public class ResumenActivity extends NavegacionActivity {
     //Para el combo escogido
     String posicion_lista;
     ArrayList<Catalogo> promociones1 = new ArrayList<Catalogo>();
-/*    Catalogo[] productos =
-            new Catalogo[]{
-                    new Catalogo(R.drawable.combo1, 17500, "COMBO 1", "1 Crispetas 170 Oz", "2 Gaseosas 32 Oz"),
-                    new Catalogo(R.drawable.combo2,14000,"COMBO 2","1 Crispetas 170 Oz","1 Gaseosas 32 Oz"),
-                    new Catalogo(R.drawable.combo3,15300,"COMBO 3","1 Crispetas 130 Oz","1 Gaseosas 32 Oz y 1 Perro o Sandwich"),
-                    new Catalogo(R.drawable.combo_grande_1,25500,"COMBO 4","1 Crispetas 170 Oz","2 Gaseosas 32 Oz"),
-            };*/
+
 
     //Declaracion Spinner
     Spinner spLetras,spNumeros;
@@ -70,6 +64,7 @@ public class ResumenActivity extends NavegacionActivity {
     String KPrecio;
     String KDesc1;
     String KDesc2;
+    String total1;
     String c1,c2,c3,c4;
     int conteo;
     @Override
@@ -81,6 +76,7 @@ public class ResumenActivity extends NavegacionActivity {
         getLayoutInflater().inflate(R.layout.activity_resumen, contentFrameLayout);
 
         prefs = getApplicationContext().getSharedPreferences("com.sp.main_preferences",Context.MODE_PRIVATE);
+
 
         KPOS = Integer.parseInt(prefs.getString("kPos","07"));
         conteo= Integer.parseInt(prefs.getString("kConteo","07"));
@@ -97,7 +93,6 @@ public class ResumenActivity extends NavegacionActivity {
 
         MyAsinc myAsincTask= new MyAsinc();
         myAsincTask.execute();
-
 
         //Para el combo que escogió
         //posicion_lista=getIntent().getExtras().getString("posicion");
@@ -125,24 +120,6 @@ public class ResumenActivity extends NavegacionActivity {
                         break;
                     case 3:
                         Letra="C";
-                        break;
-                    case 4:
-                        Letra="D";
-                        break;
-                    case 5:
-                        Letra="E";
-                        break;
-                    case 6:
-                        Letra="F";
-                        break;
-                    case 7:
-                        Letra="G";
-                        break;
-                    case 8:
-                        Letra="H";
-                        break;
-                    case 9:
-                        Letra="I";
                         break;
                 }
                 letter=Letra;
@@ -186,6 +163,8 @@ public class ResumenActivity extends NavegacionActivity {
 
         Adapter adaptador=new Adapter(getApplicationContext(),promociones1);
         lista_resumen=(ListView)findViewById(R.id.lista_resumen);
+
+        lista_resumen.invalidateViews();
         lista_resumen.setAdapter(adaptador);
 
     }
@@ -198,7 +177,7 @@ public class ResumenActivity extends NavegacionActivity {
         SavePreferences("kLetra",letter);
         SavePreferences("kPosicion",Numero);
 
-        flag=true;
+/*        flag=true;
         firebasedatos.setAndroidContext(this);//contexto con que vamos a trabjar el firebase
         firebasedatos=new Firebase(FIREBASE_URL);//constructor de firebase nos pide el com
         firebasedatos.addValueEventListener(new ValueEventListener() {
@@ -209,20 +188,18 @@ public class ResumenActivity extends NavegacionActivity {
 
                     codigo = Integer.toString(id);
                     final String data = "Silla" + codigo;
-
                     if (dataSnapshot.child("Ubicacion").child(data).exists()) {
                         // Log.d("datos",dataSnapshot.child(data).getValue().toString());
                         codigo = Integer.toString(id++);
                         flag = true;
                     } else {
-                        final Firebase firebase;
-                        final Firebase firebase1;
+*//*                        final Firebase firebase;
+                        final Firebase firebase1;*//*
                         flag = false;
-                        firebase = firebasedatos.child("Ubicacion" ); //creamos un hijo de firebasedatos
+*//*                        firebase = firebasedatos.child("Ubicacion" ); //creamos un hijo de firebasedatos
                         firebase1=firebase.child("Silla"+ id);
-
                         Silla silla = new Silla(letter,pos,imag);
-                        firebase1.setValue(silla);//agregamos a la base de datos
+                        firebase1.setValue(silla);//agregamos a la base de datos*//*
 
                     }
 
@@ -232,13 +209,29 @@ public class ResumenActivity extends NavegacionActivity {
 
             @Override
             public void onCancelled(FirebaseError firebaseError) {        }
-        });
+        });*/
 
 
-        Intent intent = new Intent(getApplicationContext(),FormaPagoActivity.class);
-        startActivity(intent);
-        Toast.makeText(getApplicationContext(),Numero, Toast.LENGTH_SHORT).show();
+        if(Letra==null ){
+            Toast.makeText(getApplicationContext(),"Ingrese la letra correspondiente a su asiento", Toast.LENGTH_SHORT).show();
+        }else {
+            Intent intent = new Intent(getApplicationContext(), FormaPagoActivity.class);
+            for (int i=0;i<promociones1.size();i++){
+                promociones1.remove(i);
+            }
 
+            SavePreferences("kConteo",String.valueOf(0));//reinicia el contador de # elementos en el carrito
+            SavePreferences("combo1","1");
+            SavePreferences("combo2","1");
+            SavePreferences("combo3","1");
+            SavePreferences("combo4","1");
+
+
+            PUSH_ADAPTADOR();
+
+            startActivity(intent);
+            finish();
+        }
 
     }
 
@@ -275,7 +268,6 @@ public class ResumenActivity extends NavegacionActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
-
                 if(c1=="ok"){
                     final String data = "producto"+0;
                     if (dataSnapshot.child("catalogo").child(data).exists()){
@@ -289,11 +281,12 @@ public class ResumenActivity extends NavegacionActivity {
                         KPrecio = text4;
                         KDesc1 = text1;
                         KDesc2 = text2;
-                        p=Integer.parseInt(KPrecio);
+                        total1 = prefs.getString("kCantidad1","07");
+                        p=Integer.parseInt(total1);
                         total+=p;
                         imagen=R.drawable.combo1;
 
-                        Catalogo cat1=new Catalogo(imagen,p ,KNombre,KDesc1,KDesc2);
+                        Catalogo cat1=new Catalogo(imagen,Integer.parseInt(KPrecio) ,KNombre,KDesc1,KDesc2);
                         promociones1.add(cat1);
                     }else{
                         Toast.makeText(getApplicationContext(),"no datos",Toast.LENGTH_SHORT).show();
@@ -314,10 +307,11 @@ public class ResumenActivity extends NavegacionActivity {
                         KPrecio = text4;
                         KDesc1 = text1;
                         KDesc2 = text2;
-                        p=Integer.parseInt(KPrecio);
+                        total1 = prefs.getString("kCantidad2","07");
+                        p=Integer.parseInt(total1);
                         total+=p;
                         imagen=R.drawable.combo2;
-                        Catalogo cat1=new Catalogo(imagen,p ,KNombre,KDesc1,KDesc2);
+                        Catalogo cat1=new Catalogo(imagen,Integer.parseInt(KPrecio) ,KNombre,KDesc1,KDesc2);
                         promociones1.add(cat1);
                     }else{
                         Toast.makeText(getApplicationContext(),"no datos",Toast.LENGTH_SHORT).show();
@@ -337,11 +331,12 @@ public class ResumenActivity extends NavegacionActivity {
                         KPrecio = text4;
                         KDesc1 = text1;
                         KDesc2 = text2;
-                        p=Integer.parseInt(KPrecio);
+                        total1 = prefs.getString("kCantidad3","07");
+                        p=Integer.parseInt(total1);
                         imagen=R.drawable.combo3;
                         total+=p;
 
-                        Catalogo cat1=new Catalogo(imagen,p ,KNombre,KDesc1,KDesc2);
+                        Catalogo cat1=new Catalogo(imagen,Integer.parseInt(KPrecio) ,KNombre,KDesc1,KDesc2);
                         promociones1.add(cat1);
                     }else{
                         Toast.makeText(getApplicationContext(),"no datos",Toast.LENGTH_SHORT).show();
@@ -362,11 +357,12 @@ public class ResumenActivity extends NavegacionActivity {
                         KPrecio = text4;
                         KDesc1 = text1;
                         KDesc2 = text2;
-                        p=Integer.parseInt(KPrecio);
+                        total1 = prefs.getString("kCantidad4","07");
+                        p=Integer.parseInt(total1);
                         imagen=R.drawable.combo_grande_1;
                         total+=p;
 
-                        Catalogo cat1=new Catalogo(imagen,p ,KNombre,KDesc1,KDesc2);
+                        Catalogo cat1=new Catalogo(imagen,Integer.parseInt(KPrecio) ,KNombre,KDesc1,KDesc2);
                         promociones1.add(cat1);
 
                     }else{
@@ -375,7 +371,8 @@ public class ResumenActivity extends NavegacionActivity {
 
                 }
                 textView.setText(String.valueOf(total));
-                PUSH_ADAPTADOR();
+                SavePreferences("keyTotal",Integer.toString(total));
+               // PUSH_ADAPTADOR();
 
             }
 

@@ -23,6 +23,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;//importar el sdk de fb
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.firebase.client.DataSnapshot;
@@ -39,6 +40,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -52,7 +55,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     public String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
     private Firebase firebasedatos;
@@ -71,8 +74,10 @@ public class LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager;
     private SignInButton mGoogleBtn;
     private GoogleApiClient mGoogleApiClient;
-    private int option=0; //1.login con google , 2. login con fb
+    private int option; //1.login con google , 2. login con fb
     private int year;
+
+
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener fireAuthStateListener;
     /**
@@ -105,19 +110,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-       // String dateString =String.valueOf(date);
-
-
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
-        mGoogleApiClient = new  GoogleApiClient.Builder(getApplicationContext()).enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+        mGoogleApiClient = new  GoogleApiClient.Builder(getApplicationContext())
+                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
@@ -132,7 +132,14 @@ public class LoginActivity extends AppCompatActivity {
 
 
         loginButton = (LoginButton) findViewById(R.id.login_button);
-        loginButton.setReadPermissions(Arrays.asList("email"));
+       // loginButton.setReadPermissions("email", "public_profile");
+
+/*
+        LoginManager.getInstance().logInWithReadPermissions(this,
+                Arrays.asList("email"));
+*/
+
+        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
         // loginButton.setPublishPermissions();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {// autocompletar
             @Override
@@ -142,21 +149,14 @@ public class LoginActivity extends AppCompatActivity {
                 handleFacebookAccessToken(loginResult.getAccessToken());
             }
 
-
             @Override
             public void onCancel() {
-
                 Toast.makeText(getApplicationContext(), "Cancel Login", Toast.LENGTH_SHORT).show();
-
-
             }
 
             @Override
             public void onError(FacebookException error) {
-
-
                 Toast.makeText(getApplicationContext(), "Error ", Toast.LENGTH_SHORT).show();
-
             }
         });
 
@@ -165,7 +165,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();//cargar al usuario en el user
-
                 if (user != null) {
                     goMainActivity();
                 }
@@ -245,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
+    public void onStop() {
         super.onStop();// ATTENTION: This was auto-generated to implement the App Indexing API.
 // See https://g.co/AppIndexing/AndroidStudio for more information.
 
@@ -259,10 +258,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-  /*  public  void  btnIngresar(View view){
-goMainActivity();
 
-    }*/
     public void btnIngresar(View view) {
         flag=true;
         int ok=0;
@@ -301,10 +297,12 @@ goMainActivity();
                                     String uu = "Bienvenido";
                                     Toast.makeText(LoginActivity.this, uu, Toast.LENGTH_SHORT).show();
                                     flag = false;
+                                    SavePreferences("kFormulario","ok");
                                     startActivity(te);
                                     finish();
                                     //cancel();
                                 }else{
+                                    SavePreferences("kFormulario","01");
                                     Toast.makeText(LoginActivity.this,"La contraseña ingresada es invalida", Toast.LENGTH_SHORT).show();
                                     flag=false;
                                 }
@@ -341,12 +339,7 @@ goMainActivity();
         eName.setText("");
         ePass.setText("");
 
-        if (option==2){
-            callbackManager.onActivityResult(requestCode, resultCode, data);//logeo con fb
-           // goMainActivity();
-        }else {
-
-
+        if (option==1){
             if (requestCode == RC_SIGN_IN) {
                 GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
                 if (result.isSuccess()) {
@@ -358,6 +351,10 @@ goMainActivity();
                     // ...
                 }
             }
+
+        }else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);//logeo con fb
+            //goMainActivity();
         }
         if (requestCode == 1234 && resultCode == RESULT_OK) {
             //prefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -400,5 +397,28 @@ goMainActivity();
         editor.commit();
 /*        Intent sd=new Intent(this,Secongtess.class);
         startActivity(sd);*/
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        firebaseAuth.signOut();
+        // Google sign out
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(@NonNull Status status) {
+                        updateUI(null);
+                    }
+                });
+    }
+    private void updateUI(FirebaseUser user) {
+        hideProgressDialog();
+        if (user != null) {
+/*            Intent intent = new Intent(getApplicationContext(), .class);
+            startActivity(intent);*/
+            goMainActivity();
+        } else {
+
+        }
     }
 }

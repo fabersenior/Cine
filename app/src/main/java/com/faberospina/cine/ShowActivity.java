@@ -26,9 +26,12 @@ public class ShowActivity extends AppCompatActivity {
     ImageView imageShow;
     private  int pos;
     int conteo=0;
+    int total=0;
+    int valor=0;
     TextView title,precio,des1,des2;
 
     EditText cantidad;
+    String cantidades;
 
     private  String codigo;
     private String text1,text2,text3,text4;
@@ -116,7 +119,7 @@ public class ShowActivity extends AppCompatActivity {
     public  void btn_Añadir_Carrito(View view){
 
         Intent intent= new Intent(getApplicationContext(),CatalogoActivity.class);
-        SavePreferences("kCantidad",cantidad.getText().toString());
+        cantidades=cantidad.getText().toString();
         conteo = Integer.parseInt(prefs.getString("kConteo","07"));
         conteo++;
         SavePreferences("kConteo",String.valueOf(conteo));
@@ -124,23 +127,54 @@ public class ShowActivity extends AppCompatActivity {
             case 0://obtenerlas de la base de datos!
               // imageShow.setImageResource(R.drawable.combo1);
                 SavePreferences("combo1","ok");
+                if(cantidad.length()==0){
+                    Toast.makeText(getApplicationContext(),"Ingrese la cantidad", Toast.LENGTH_SHORT).show();
+                }else {
+                    total = (Integer.parseInt(text4)) * (Integer.parseInt(cantidades));
+                    SavePreferences("kCantidad1", Integer.toString(total));
+                    startActivity(intent);
+                    finish();
+                }
                 break;
             case 1:
                 //imageShow.setImageResource(R.drawable.combo2);
                 SavePreferences("combo2","ok");
+                if(cantidad.length()==0){
+                    Toast.makeText(getApplicationContext(),"Ingrese la cantidad", Toast.LENGTH_SHORT).show();
+                }else {
+                    total = (Integer.parseInt(text4)) * (Integer.parseInt(cantidades));
+                    SavePreferences("kCantidad2", Integer.toString(total));
+                    startActivity(intent);
+                    finish();
+                }
                 break;
             case 2:
                 //imageShow.setImageResource(R.drawable.combo3);
                 SavePreferences("combo3","ok");
+                if(cantidad.length()==0){
+                    Toast.makeText(getApplicationContext(),"Ingrese la cantidad", Toast.LENGTH_SHORT).show();
+                }else {
+                    total = (Integer.parseInt(text4)) * (Integer.parseInt(cantidades));
+                    SavePreferences("kCantidad3", Integer.toString(total));
+                    startActivity(intent);
+                    finish();
+                }
                 break;
             case 3:
                 //imageShow.setImageResource(R.drawable.combo_grande_1);
                 SavePreferences("combo4","ok");
+                if(cantidad.length()==0){
+                    Toast.makeText(getApplicationContext(),"Ingrese la cantidad", Toast.LENGTH_SHORT).show();
+                }else {
+                    total = (Integer.parseInt(text4)) * (Integer.parseInt(cantidades));
+                    SavePreferences("kCantidad4", Integer.toString(total));
+                    startActivity(intent);
+                    finish();
+                }
                 break;
         }
 
-        startActivity(intent);
-        finish();
+
     }
 
     private void SavePreferences(String key, String value){

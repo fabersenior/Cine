@@ -63,7 +63,8 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".DialogoActivity"></activity>
+        <activity android:name=".DialogoActivity" />
+        <activity android:name=".EfectivoActivity"></activity>
     </application>
 
 </manifest>

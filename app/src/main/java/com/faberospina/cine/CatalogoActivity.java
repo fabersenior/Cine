@@ -34,6 +34,8 @@ public class CatalogoActivity extends NavegacionActivity {
     private String FIREBASE_URL="https://appcine-b45ca.firebaseio.com/";
     private Firebase firebasedatos;
 
+    private  String KEY_FOR="";
+
     //Array list
     private Catalogo[] productos=
             new Catalogo[]{
@@ -53,6 +55,10 @@ public class CatalogoActivity extends NavegacionActivity {
         FrameLayout contentFrameLayout = (FrameLayout) findViewById(R.id.contenedorFrame); //Remember this is the FrameLayout area within your activity_main.xml
         getLayoutInflater().inflate(R.layout.activity_catalogo, contentFrameLayout);
 
+        SharedPreferences prefs  = getApplicationContext().getSharedPreferences("com.sp.main_preferences", Context.MODE_PRIVATE);
+
+        KEY_FOR= prefs.getString("kFormulario","01");
+
 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();//usuario actual
@@ -61,7 +67,19 @@ public class CatalogoActivity extends NavegacionActivity {
             String email = user.getEmail();
             String uid = user.getUid();
 
+            SavePreferences("kName",name);
+            SavePreferences("kPass",uid);
+            SavePreferences("kEmail1",email);
+
         }else{
+
+            if(KEY_FOR=="ok"){
+
+            }else {
+                SavePreferences("kFormulario","01");
+                logout();
+            }
+
             //logout();
         }
         //Para el combo que se escogió

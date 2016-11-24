@@ -41,7 +41,7 @@
                 android:layout_centerVertical="true"
                 android:layout_alignLeft="@+id/imageView2"
                 android:layout_alignStart="@+id/imageView2"
-                android:layout_marginLeft="152dp"
+                android:layout_marginLeft="15dp"
                 android:layout_marginStart="152dp" />
 
 
@@ -88,7 +88,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contraseña :"
+                android:text="# Usuario :"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -97,15 +97,15 @@
 
             <TextView
                 android:layout_width="130dp"
+                android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:hint="Contraseña"
+                android:hint="Numero"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 android:textSize="20sp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="28dp"
                 android:textAlignment="center"
                 android:id="@+id/tContrasena"
-                android:inputType="textPassword"
                 />
 
         </LinearLayout>
@@ -136,7 +136,6 @@
                 android:layout_marginLeft="55dp"
                 android:textAlignment="center"
                 android:id="@+id/tCorreo"
-                android:inputType="textPassword"
                 />
 
         </LinearLayout>

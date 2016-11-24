@@ -106,6 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Apellidos"
+                    android:id="@+id/apellido"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
@@ -114,6 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Nombres"
+                    android:id="@+id/nombre"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:textColor="@color/white"
@@ -121,6 +123,7 @@
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:id="@+id/telefono"
                     android:hint="(555)555-5555"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
@@ -137,12 +140,13 @@
                     android:singleLine="true"
                     android:inputType="textEmailAddress"
                     android:textSize="13sp"
-                    android:id="@+id/editText3" />
+                    android:id="@+id/correos" />
 
                 <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="#######"
+                    android:id="@+id/identificacion"
                     android:inputType="number"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
@@ -198,6 +202,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="N° Tarjeta"
+                    android:id="@+id/tarjeta"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:inputType="number"
@@ -207,6 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Fecha"
+                    android:id="@+id/caducidad"
                     android:singleLine="true"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
@@ -215,6 +221,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="#####"
+                    android:id="@+id/codigo"
                     android:textColorHint="@color/white"
                     android:singleLine="true"
                     android:inputType="number"
